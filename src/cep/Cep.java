@@ -34,6 +34,7 @@ public class Cep extends JFrame {
 	private JTextField txtDistrict;
 	private JTextField txtCity;
 	private JTextField txtUf;
+	private JLabel checkLabel;
 
 	/**
 	 * Launch the application.
@@ -115,9 +116,11 @@ public class Cep extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				if (txtCep.getText().equals("")) {
 					JOptionPane.showMessageDialog(null, "Informe o CEP");
+					checkLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/error.png")));
 					txtCep.requestFocus();
 				} else if (txtCep.getText().length() < 8) {
 					JOptionPane.showMessageDialog(null, "Cep incompleto");
+					checkLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/error.png")));
 					txtCep.requestFocus();
 				} else {
 					// Find address
@@ -126,9 +129,9 @@ public class Cep extends JFrame {
 			}
 		});
 
-		btnCep.setBounds(197, 28, 94, 29);
+		btnCep.setBounds(218, 28, 94, 29);
 		contentPane.add(btnCep);
-
+		//Click event (Limpar)
 		JButton btnClear = new JButton("Limpar");
 		btnClear.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -137,13 +140,15 @@ public class Cep extends JFrame {
 				txtAddress.setText("");
 				txtUf.setText("");
 				txtDistrict.setText("");
+				checkLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("")));
+
 			}
 		});
 		btnClear.setBounds(26, 226, 109, 29);
 		contentPane.add(btnClear);
 
 		// Click event (Button Sobre)
-		JButton btnAbout = new JButton("Sobre");
+		JButton btnAbout = new JButton("");
 		btnAbout.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				About about = new About();
@@ -154,7 +159,7 @@ public class Cep extends JFrame {
 		btnAbout.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnAbout.setBackground(SystemColor.control);
 		btnAbout.setIcon(new ImageIcon(Cep.class.getResource("/img/about.png")));
-		btnAbout.setBounds(327, 17, 117, 51);
+		btnAbout.setBounds(351, 16, 61, 52);
 		contentPane.add(btnAbout);
 
 		// Validation fields
@@ -168,6 +173,11 @@ public class Cep extends JFrame {
 		txtUf.setBounds(302, 184, 42, 26);
 		contentPane.add(txtUf);
 		txtUf.setColumns(10);
+		
+		checkLabel = new JLabel("");
+		checkLabel.setBounds(195, 33, 23, 21);
+		contentPane.add(checkLabel);
+		
 		valid.setOnlyNums(true);
 		valid.setLimit(8);
 
@@ -201,6 +211,15 @@ public class Cep extends JFrame {
 				}
 				if (element.getQualifiedName().equals("logradouro")) {
 					logradouro = element.getText();
+				}
+				if(element.getQualifiedName().equals("resultado")) {
+					resultado = element.getText();
+					if (resultado.equals("1")) {
+						checkLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/check.png")));
+					}else {
+						JOptionPane.showMessageDialog(null, "CEP não encontrado");
+						checkLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/error.png")));
+					}
 				}
 			}
 			// set address
